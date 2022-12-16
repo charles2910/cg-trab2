@@ -71,21 +71,25 @@ class Object:
     """
     def __init__(self, program, coord, obj_scale, obj_rotation, color):
         self.program = program
-        self.color = color
+        self.lightColor = color
         self.vao = None
         self.vertices = None
         self.coordinates = coord
         self.obj_scale = obj_scale
         self.obj_rotation = obj_rotation
         # The base object contains the identity transformation matrix
-        self.mat_transformation = np.array([[1.0, 0.0, 0.0, 0.0],
-                                            [0.0, 1.0, 0.0, 0.0],
-                                            [0.0, 0.0, 1.0, 0.0],
-                                            [0.0, 0.0, 0.0, 1.0]], np.float32)
-        # Se a posição inicial for fora da origem, faça a translação "manual"
-        if self.coordinates.x != 0 or self.coordinates.y != 0:
-            self.mat_transformation[0][3] = self.coordinates.x
-            self.mat_transformation[1][3] = self.coordinates.y
+        self.projection = np.array([[1.0, 0.0, 0.0, 0.0],
+                                    [0.0, 1.0, 0.0, 0.0],
+                                    [0.0, 0.0, 1.0, 0.0],
+                                    [0.0, 0.0, 0.0, 1.0]], np.float32)
+        self.view = np.array([[1.0, 0.0, 0.0, 0.0],
+                              [0.0, 1.0, 0.0, 0.0],
+                              [0.0, 0.0, 1.0, 0.0],
+                              [0.0, 0.0, 0.0, 1.0]], np.float32)
+        self.model = np.array([[1.0, 0.0, 0.0, 0.0],
+                               [0.0, 1.0, 0.0, 0.0],
+                               [0.0, 0.0, 1.0, 0.0],
+                               [0.0, 0.0, 0.0, 1.0]], np.float32)
 
     @abstractmethod
     def create(self):
@@ -120,46 +124,11 @@ class Object:
     def draw(self):
         """Generic draw method for simple objects. For complex objects, this method is overwritten."""
         glBindVertexArray(self.vao)
-        glUniformMatrix4fv(glGetUniformLocation(self.program, "mat_transformation"), 1, GL_TRUE, self.mat_transformation)
+        glUniformMatrix4fv(glGetUniformLocation(self.program, "projection"), 1, GL_TRUE, self.projection)
+        glUniformMatrix4fv(glGetUniformLocation(self.program, "view"), 1, GL_TRUE, self.view)
+        glUniformMatrix4fv(glGetUniformLocation(self.program, "model"), 1, GL_TRUE, self.model)
 
-        glUniform4f(glGetUniformLocation(self.program, "color"), self.color.R, self.color.G, self.color.B, 1.0)
+        glUniform4f(glGetUniformLocation(self.program, "lightColor"), self.color.R, self.color.G, self.color.B, 1.0)
         glDrawArrays(GL_TRIANGLE_FAN, 0, len(self.vertices))
 
         glBindVertexArray(0)
-
-    def translate(self, t_x, t_y):
-        '''Multiply the current matrix by the translation matrix with offset (t_x, t_y)'''
-        self.coordinates.x += t_x
-        self.coordinates.y += t_y
-        transl_matrix = np.array([
-            [1.0, 0.0, 0.0, t_x],
-            [0.0, 1.0, 0.0, t_y],
-            [0.0, 0.0, 1.0, 0.0],
-            [0.0, 0.0, 0.0, 1.0]],
-            np.float32)
-        self.mat_transformation = np.matmul(transl_matrix, self.mat_transformation)
-
-    def scale(self, s_x, s_y):
-        '''Multiply the current matrix by the scale matrix (s_x, s_x). Keep ratio s_y = s_x'''
-        new_scale = self.obj_scale * s_x
-        if new_scale > 0:
-            self.obj_scale = new_scale
-            mat_scale = np.array([
-                [s_x, 0.0, 0.0, self.coordinates.x * (1.0 - s_x)],
-                [0.0, s_x, 0.0, self.coordinates.y * (1.0 - s_x)],
-                [0.0, 0.0, 1.0, 0.0],
-                [0.0, 0.0, 0.0, 1.0]],
-                np.float32)
-            self.mat_transformation = np.matmul(mat_scale, self.mat_transformation)
-
-    def rotate(self, ang):
-        '''Multiply the current matrix by the rotation matrix (ang).'''
-        self.obj_rotation += ang
-        ref = self.coordinates
-        mat_rot = np.array([
-            [np.cos(ang), -np.sin(ang),  0.0,  ref.x *(1 - np.cos(ang)) + ref.y * np.sin(ang)],
-            [np.sin(ang),  np.cos(ang),  0.0,  ref.y *(1 - np.cos(ang)) - ref.x * np.sin(ang)],
-            [0.0,          0.0,          1.0,  0.0],
-            [0.0,          0.0,          0.0,  1.0]],
-            np.float32)
-        self.mat_transformation = np.matmul(mat_rot, self.mat_transformation)
