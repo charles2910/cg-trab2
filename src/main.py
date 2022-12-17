@@ -14,6 +14,7 @@ from resources import build_resources
 from draw import draw_models
 from transform import *
 from model import build_model_defs
+from shader import Shader
 from window import Window
 
 vertex_code = """
@@ -32,8 +33,8 @@ vertex_code = """
         void main(){
             gl_Position = projection * view * model * vec4(position,1.0);
             out_texture = vec2(texture_coord);
-            out_fragPos = vec3(  model * vec4(position, 1.0));
-            out_normal = vec3( model *vec4(normals, 1.0));
+            out_fragPos = vec3(model * vec4(position, 1.0));
+            out_normal = vec3(model *vec4(normals, 1.0));
         }
         """
 
@@ -85,40 +86,8 @@ fragment_code = """
 
 if __name__ == "__main__":
     window = Window(1600, 1200, "Rock Lee vs Gaara")
+    program = Shader(vertex_code, fragment_code).program
 
-    # Request a program and shader slots from GPU
-    program = glCreateProgram()
-    vertex = glCreateShader(GL_VERTEX_SHADER)
-    fragment = glCreateShader(GL_FRAGMENT_SHADER)
-
-    # Set shaders source
-    glShaderSource(vertex, vertex_code)
-    glShaderSource(fragment, fragment_code)
-
-    # Compile shaders
-    glCompileShader(vertex)
-    if not glGetShaderiv(vertex, GL_COMPILE_STATUS):
-        error = glGetShaderInfoLog(vertex).decode()
-        raise RuntimeError(error)
-
-    glCompileShader(fragment)
-    if not glGetShaderiv(fragment, GL_COMPILE_STATUS):
-        error = glGetShaderInfoLog(fragment).decode()
-        raise RuntimeError(error)
-
-    # Attach shader objects to the program
-    glAttachShader(program, vertex)
-    glAttachShader(program, fragment)
-
-    # Build program
-    glLinkProgram(program)
-    if not glGetProgramiv(program, GL_LINK_STATUS):
-        raise RuntimeError(glGetProgramInfoLog(program))
-
-    # Make program the default program
-    glUseProgram(program)
-
-    glEnable(GL_TEXTURE_2D)
     vertices_list, textures_coord_list, normals_list, resources, texture_map, materials_map = load_models(build_resources())
 
     # Request a buffer slot from GPU
