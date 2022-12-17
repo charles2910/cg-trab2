@@ -6,14 +6,12 @@
 
 import glfw
 from OpenGL.GL import *
-import numpy as np
 import glm
 import math
-from loader import load_models
-from resources import build_resources
 from draw import draw_models
 from transform import *
 from model import build_model_defs
+from scene import Scene
 from shader import Shader
 from window import Window
 
@@ -87,47 +85,9 @@ fragment_code = """
 if __name__ == "__main__":
     window = Window(1600, 1200, "Rock Lee vs Gaara")
     program = Shader(vertex_code, fragment_code).program
+    scene = Scene(program)
 
-    vertices_list, textures_coord_list, normals_list, resources, texture_map, materials_map = load_models(build_resources())
-
-    # Request a buffer slot from GPU
-    buffer = glGenBuffers(3)
-
-    vertices = np.zeros(len(vertices_list), [("position", np.float32, 3)])
-    vertices['position'] = vertices_list
-
-    # Upload data
-    glBindBuffer(GL_ARRAY_BUFFER, buffer[0])
-    glBufferData(GL_ARRAY_BUFFER, vertices.nbytes, vertices, GL_STATIC_DRAW)
-    stride = vertices.strides[0]
-    offset = ctypes.c_void_p(0)
-    loc_vertices = glGetAttribLocation(program, "position")
-    glEnableVertexAttribArray(loc_vertices)
-    glVertexAttribPointer(loc_vertices, 3, GL_FLOAT, False, stride, offset)
-
-    textures = np.zeros(len(textures_coord_list), [("position", np.float32, 2)])
-    textures['position'] = textures_coord_list
-
-    # Upload data
-    glBindBuffer(GL_ARRAY_BUFFER, buffer[1])
-    glBufferData(GL_ARRAY_BUFFER, textures.nbytes, textures, GL_STATIC_DRAW)
-    stride = textures.strides[0]
-    offset = ctypes.c_void_p(0)
-    loc_texture_coord = glGetAttribLocation(program, "texture_coord")
-    glEnableVertexAttribArray(loc_texture_coord)
-    glVertexAttribPointer(loc_texture_coord, 2, GL_FLOAT, False, stride, offset)
-
-    normals = np.zeros(len(normals_list), [("position", np.float32, 3)])
-    normals['position'] = normals_list
-
-    # Upload coordenadas normals de cada vertice
-    glBindBuffer(GL_ARRAY_BUFFER, buffer[2])
-    glBufferData(GL_ARRAY_BUFFER, normals.nbytes, normals, GL_STATIC_DRAW)
-    stride = normals.strides[0]
-    offset = ctypes.c_void_p(0)
-    loc_normals_coord = glGetAttribLocation(program, "normals")
-    glEnableVertexAttribArray(loc_normals_coord)
-    glVertexAttribPointer(loc_normals_coord, 3, GL_FLOAT, False, stride, offset)
+    scene.prepare()
 
     cameraPos = glm.vec3(0.0, 0.0, 1.0);
     cameraFront = glm.vec3(0.0, 0.0, -1.0);
@@ -153,9 +113,8 @@ if __name__ == "__main__":
 
         if key == 80 and action == 1 and polygonal_mode == True:
             polygonal_mode = False
-        else:
-            if key == 80 and action == 1 and polygonal_mode == False:
-                polygonal_mode = True
+        elif key == 80 and action == 1 and polygonal_mode == False:
+            polygonal_mode = True
 
         cameraPos[0] = max(cameraPos[0], -25) if cameraPos[0] < 0 else min(cameraPos[0], 25)
         cameraPos[1] = max(cameraPos[1], -0.5) if cameraPos[1] < 0 else min(cameraPos[1], 25)
@@ -206,7 +165,6 @@ if __name__ == "__main__":
     angle = 0
 
     while not glfw.window_should_close(window.window):
-
         glfw.poll_events()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -218,9 +176,9 @@ if __name__ == "__main__":
         else:
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
-        angle = (angle + 0.00005)
+        angle += 0.00005
 
-        draw_models(program, build_model_defs(angle), resources, texture_map, materials_map)
+        draw_models(program, build_model_defs(angle), scene.resources, scene.texture_map, scene.materials_map)
 
         mat_view = view(cameraPos, cameraFront, cameraUp)
         loc_view = glGetUniformLocation(program, "view")
