@@ -52,3 +52,4 @@ class Shader:
         glUseProgram(self.program)
 
         glEnable(GL_TEXTURE_2D)
+        glEnable(GL_DEPTH_TEST)

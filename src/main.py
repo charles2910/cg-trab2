@@ -8,9 +8,6 @@ import glfw
 from OpenGL.GL import *
 import glm
 import math
-from draw import draw_models
-from transform import *
-from model import build_model_defs
 from scene import Scene
 from shader import Shader
 from window import Window
@@ -85,7 +82,7 @@ fragment_code = """
 if __name__ == "__main__":
     window = Window(1600, 1200, "Rock Lee vs Gaara")
     program = Shader(vertex_code, fragment_code).program
-    scene = Scene(program)
+    scene = Scene(window, program)
 
     scene.prepare()
 
@@ -107,9 +104,9 @@ if __name__ == "__main__":
         if key == 68 and (action == 1 or action == 2):  # tecla D
             camera.pos += glm.normalize(glm.cross(camera.front, camera.up)) * camera_speed
 
-        if key == 80 and action == 1 and scene.polygonal_mode == True:
+        if key == 80 and action == 1 and scene.polygonal_mode:
             scene.polygonal_mode = False
-        elif key == 80 and action == 1 and scene.polygonal_mode == False:
+        elif key == 80 and action == 1 and not scene.polygonal_mode:
             scene.polygonal_mode = True
 
         camera.pos[0] = max(camera.pos[0], -25) if camera.pos[0] < 0 else min(camera.pos[0], 25)
@@ -158,36 +155,13 @@ if __name__ == "__main__":
     glfw.show_window(window.window)
     glfw.set_cursor_pos(window.window, lastX, lastY)
 
-    glEnable(GL_DEPTH_TEST)  ### importante para 3D
-
-    angle = 0
-
     while not glfw.window_should_close(window.window):
         glfw.poll_events()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
         glClearColor(1.0, 1.0, 1.0, 1.0)
 
-        if scene.polygonal_mode == True:
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-        else:
-            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-
-        angle += 0.00005
-
-        draw_models(program, build_model_defs(angle), scene.resources, scene.texture_map, scene.materials_map)
-
-        mat_view = view(scene.camera.pos, scene.camera.front, scene.camera.up)
-        loc_view = glGetUniformLocation(program, "view")
-        glUniformMatrix4fv(loc_view, 1, GL_TRUE, mat_view)
-
-        mat_projection = projection(window.height, window.width)
-        loc_projection = glGetUniformLocation(program, "projection")
-        glUniformMatrix4fv(loc_projection, 1, GL_TRUE, mat_projection)
-
-        loc_view_pos = glGetUniformLocation(program, "viewPos")  # recuperando localizacao da variavel viewPos na GPU
-        glUniform3f(loc_view_pos, scene.camera.pos[0], scene.camera.pos[1], scene.camera.pos[2])  ### posicao da camera/observador (x,y,z)
+        scene.draw()
 
         glfw.swap_buffers(window.window)
 

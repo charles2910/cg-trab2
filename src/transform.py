@@ -2,32 +2,37 @@ import glm
 import math
 import numpy as np
 
-def model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z):
-    angle = math.radians(angle)
+class Coordinates:
+    def __init__(self, x, y, z):
+        self.x = x
+        self.y = y
+        self.z = z
 
-    matrix_transform = glm.mat4(1.0)  # instanciando uma matriz identidade
+class Camera:
+    def __init__(self, pos, front, up):
+        self.pos = pos
+        self.front = front
+        self.up = up
 
-    # aplicando translacao
-    matrix_transform = glm.translate(matrix_transform, glm.vec3(t_x, t_y, t_z))
+class Transform:
+    def __init__(self):
+        pass
 
-    # aplicando rotacao
-    matrix_transform = glm.rotate(matrix_transform, angle, glm.vec3(r_x, r_y, r_z))
+    def model(self, angle, r, t, s):
+        angle = math.radians(angle)
+        mat = glm.mat4(1.0)
 
-    # aplicando escala
-    matrix_transform = glm.scale(matrix_transform, glm.vec3(s_x, s_y, s_z))
+        mat = glm.translate(mat, glm.vec3(t.x, t.y, t.z))
+        mat = glm.rotate(mat, angle, glm.vec3(r.x, r.y, r.z))
+        mat = glm.scale(mat, glm.vec3(s.x, s.y, s.z))
 
-    matrix_transform = np.array(matrix_transform)
+        return np.array(mat)
 
-    return matrix_transform
+    def view(self, camera : Camera):
+        mat = glm.lookAt(camera.pos, camera.pos + camera.front, camera.up);
+        return np.array(mat)
 
-
-def view(cameraPos, cameraFront, cameraUp):
-    mat_view = glm.lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-    mat_view = np.array(mat_view)
-    return mat_view
-
-def projection(altura, largura):
-    # perspective parameters: fovy, aspect, near, far
-    mat_projection = glm.perspective(glm.radians(45.0), largura / altura, 0.1, 1000.0)
-    mat_projection = np.array(mat_projection)
-    return mat_projection
+    def projection(self, height, width):
+        # perspective parameters: fovy, aspect, near, far
+        mat = glm.perspective(glm.radians(45.0), width / height, 0.1, 1000.0)
+        return np.array(mat)

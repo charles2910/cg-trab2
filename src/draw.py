@@ -1,15 +1,20 @@
 from OpenGL.GL import *
 from resources import create_texture_path
-from transform import model
+from transform import Transform, Coordinates
 
 def draw_model(program, model_name, model_position, model_light, resource, texture_map, materials):
     (start_index, end_index) = resource['position']
 
+    transform = Transform()
+    r = Coordinates(0.0, 0.0, 0.0)
+    s = Coordinates(0.0, 0.0, 0.0)
+    t = Coordinates(0.0, 0.0, 0.0)
+
     # aplica a matriz model
-    (angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z) = model_position
+    (angle, r.x, r.y, r.z, t.x, t.y, t.z, s.x, s.y, s.z) = model_position
     (ka, kd, ks, ns, is_source) = model_light
 
-    mat_model = model(angle, r_x, r_y, r_z, t_x, t_y, t_z, s_x, s_y, s_z)
+    mat_model = transform.model(angle, r, t, s)
     loc_model = glGetUniformLocation(program, "model")
     glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
 
@@ -27,7 +32,7 @@ def draw_model(program, model_name, model_position, model_light, resource, textu
 
     if (is_source):
         loc_light_pos = glGetUniformLocation(program, "lightPos")  # recuperando localizacao da variavel lightPos na GPU
-        glUniform3f(loc_light_pos, t_x, t_y, t_z)  ### posicao da fonte de luz
+        glUniform3f(loc_light_pos, t.x, t.y, t.z)  ### posicao da fonte de luz
 
     for i in range(len(materials)):
         texture = create_texture_path(model_name, materials[i]['texture'])
