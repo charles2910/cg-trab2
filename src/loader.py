@@ -75,7 +75,6 @@ def load_model(resource, texture_map):
     materials = []
     current_material = None
 
-    objects_map = dict()
     glGenTextures(len(resource['textures']))
 
     # Read textures
@@ -101,13 +100,13 @@ def load_model(resource, texture_map):
 
     return vertices, textures_coord, normals, materials, texture_map
 
-
 def load_models(resources):
     vertices_list = []
     normals_list = []
     textures_coord_list = []
     materials_map = dict()
     texture_map = dict()
+
     for resource in resources:
         start_position = len(vertices_list)
         print(f'Processando modelo {resource}. Vertice inicial:', start_position)
