@@ -21,9 +21,10 @@ class Coordinates:
         y : float
         y coordinate that varies from -1 to 1
     """
-    def __init__(self, x, y):
+    def __init__(self, x, y, z):
         self.x = x
         self.y = y
+        self.z = z
 
 class Color:
     """
@@ -60,11 +61,11 @@ class Object:
         coord : class Coordinates
         Cartesian coordinates of the center of the object
 
-        obj_scale: float
-        Initial scale of the object
+        obj_scale: class Coordinates
+        Initial scale of the object in the x, y and z axis
 
-        obj_rotation: float
-        Initial rotation of the object in radians from the x axis
+        obj_rotation: class Coordinates
+        Initial rotation of the object in radians from the x, y and z axis
 
         color: class Color
         Initial color of the object
@@ -75,8 +76,8 @@ class Object:
         self.vao = None
         self.vertices = None
         self.coordinates = coord
-        self.obj_scale = obj_scale
-        self.obj_rotation = obj_rotation
+        self.scale = obj_scale
+        self.rotation = obj_rotation
         # The base object contains the identity transformation matrix
         self.projection = np.array([[1.0, 0.0, 0.0, 0.0],
                                     [0.0, 1.0, 0.0, 0.0],
@@ -90,6 +91,10 @@ class Object:
                                [0.0, 1.0, 0.0, 0.0],
                                [0.0, 0.0, 1.0, 0.0],
                                [0.0, 0.0, 0.0, 1.0]], np.float32)
+        # Apply initial transformations
+        translate(coord.x, coord.y, coord.z)
+        scale(obj_scale.x, obj_scale.y, obj_scale.z)
+        rotate(obj_rotation.x, obj_rotation.y, obj_rotation.z)
 
     @abstractmethod
     def create(self):
@@ -132,3 +137,47 @@ class Object:
         glDrawArrays(GL_TRIANGLE_FAN, 0, len(self.vertices))
 
         glBindVertexArray(0)
+
+    def translate(self, t_x, t_y, t_z):
+        '''Multiply the current matrix by the 3D translation matrix with offset (t_x, t_y, t_z)'''
+        self.coordinates.x += t_x
+        self.coordinates.y += t_y
+        self.coordinates.z += t_z
+        transl_matrix = np.array([
+            [1.0, 0.0, 0.0, t_x],
+            [0.0, 1.0, 0.0, t_y],
+            [0.0, 0.0, 1.0, t_z],
+            [0.0, 0.0, 0.0, 1.0]],
+            np.float32)
+        self.model = np.matmul(transl_matrix, self.model)
+
+    def scale(self, s_x, s_y, s_z):
+        '''Multiply the current matrix by the 3D scale matrix (s_x, s_y, s_z)'''
+        new_scale.x = self.scale.x * s_x
+        new_scale.y = self.scale.y * s_y
+        new_scale.z = self.scale.z * s_z
+        if new_scale > 0:
+            self.scale = new_scale
+            mat_scale = np.array([
+                [s_x, 0.0, 0.0, self.coordinates.x * (1.0 - s_x)],
+                [0.0, s_y, 0.0, self.coordinates.y * (1.0 - s_y)],
+                [0.0, 0.0, s_y, self.coordinates.z * (1.0 - s_z)],
+                [0.0, 0.0, 0.0, 1.0]],
+                np.float32)
+            self.model = np.matmul(mat_scale, self.model)
+
+    def rotate(self, a_x, a_y, a_z):
+        '''Multiply the current matrix by the 3D rotation matrix (ang).'''
+        self.rotation.x += a_x
+        self.rotation.y += a_y
+        self.rotation.z += a_z
+        ref = self.coordinates
+        translate(-ref.x, -ref.y, -ref.z)
+        mat_rot = np.array([
+            [ np.cos(a_y) * np.cos(a_z),                                           -np.cos(a_y) * np.sin(a_z),                                            np.sin(a_y),                1.0],
+            [ np.sin(a_x) * np.sin(a_y) * np.cos(a_z) + np.cos(a_x) * np.sin(a_z), -np.sin(a_x) * np.sin(a_y) * np.sin(a_z) + np.cos(a_x) * np.cos(a_z), -np.sin(a_x) * np.cos(a_y),  1.0],
+            [-np.cos(a_x) * np.sin(a_y) * np.cos(a_z) + np.sin(a_x) * np.sin(a_z),  np.cos(a_x) * np.sin(a_y) * np.sin(a_z) + np.sin(a_x) * np.cos(a_z),  np.cos(a_x) * np.cos(a_y),  1.0],
+            [0.0,          0.0,          0.0,  1.0]],
+            np.float32)
+        self.mat_transformation = np.matmul(mat_rot, self.model)
+        translate(ref.x, ref.y, ref.z)
