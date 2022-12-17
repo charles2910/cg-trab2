@@ -3,7 +3,7 @@ import numpy as np
 import glm
 from draw import draw_models
 from loader import load_models
-from model import build_model_defs
+from model import Models
 from resources import build_resources
 from transform import Camera, Transform
 
@@ -12,13 +12,13 @@ class Scene:
         self.program = program
         self.window = window
         self.resources = build_resources()
+        self.models = Models()
         self.camera = Camera(
             glm.vec3(0.0, 0.0, 1.0),
             glm.vec3(0.0, 0.0, -1.0),
             glm.vec3(0.0, 1.0, 0.0)
         )
         self.polygonal_mode = False
-        self.angle = 0
 
     def prepare(self):
         vertices_list, textures_coord_list, normals_list, resources, texture_map, materials_map = load_models(self.resources)
@@ -74,9 +74,9 @@ class Scene:
         else:
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
-        self.angle += 0.00005
+        self.models.angle += 0.00008
 
-        draw_models(self.program, build_model_defs(self.angle), self.resources, self.texture_map, self.materials_map)
+        draw_models(self.program, self.models.build(), self.resources, self.texture_map, self.materials_map)
 
         mat_view = transform.view(self.camera)
         loc_view = glGetUniformLocation(self.program, "view")

@@ -2,7 +2,9 @@ from OpenGL.GL import *
 from resources import create_texture_path
 from transform import Transform, Coordinates
 
-def draw_model(program, model_name, model_position, model_light, resource, texture_map, materials):
+def draw_model(program, model_name, model, resource, texture_map, materials):
+    model_position = model['position']
+    model_light = model['light']
     (start_index, end_index) = resource['position']
 
     transform = Transform()
@@ -46,5 +48,4 @@ def draw_model(program, model_name, model_position, model_light, resource, textu
 
 def draw_models(program, models, resources, texture_map, materials_map):
     for model in models:
-        draw_model(program, model, models[model]['position'], models[model]['light'], resources[model], texture_map,
-                   materials_map[model])
+        draw_model(program, model, models[model], resources[model], texture_map, materials_map[model])
