@@ -89,36 +89,32 @@ if __name__ == "__main__":
 
     scene.prepare()
 
-    cameraPos = glm.vec3(0.0, 0.0, 1.0);
-    cameraFront = glm.vec3(0.0, 0.0, -1.0);
-    cameraUp = glm.vec3(0.0, 1.0, 0.0);
-
-    polygonal_mode = False
-
     def key_event(window, key, scancode, action, mods):
-        global cameraPos, cameraFront, cameraUp, polygonal_mode
+        global scene
 
-        cameraSpeed = 0.2
+        camera = scene.camera
+
+        camera_speed = 0.2
         if key == 87 and (action == 1 or action == 2):  # tecla W
-            cameraPos += cameraSpeed * cameraFront
+            camera.pos += camera_speed * camera.front
 
         if key == 83 and (action == 1 or action == 2):  # tecla S
-            cameraPos -= cameraSpeed * cameraFront
+            camera.pos -= camera_speed * camera.front
 
         if key == 65 and (action == 1 or action == 2):  # tecla A
-            cameraPos -= glm.normalize(glm.cross(cameraFront, cameraUp)) * cameraSpeed
+            camera.pos -= glm.normalize(glm.cross(camera.front, camera.up)) * camera_speed
 
         if key == 68 and (action == 1 or action == 2):  # tecla D
-            cameraPos += glm.normalize(glm.cross(cameraFront, cameraUp)) * cameraSpeed
+            camera.pos += glm.normalize(glm.cross(camera.front, camera.up)) * camera_speed
 
-        if key == 80 and action == 1 and polygonal_mode == True:
-            polygonal_mode = False
-        elif key == 80 and action == 1 and polygonal_mode == False:
-            polygonal_mode = True
+        if key == 80 and action == 1 and scene.polygonal_mode == True:
+            scene.polygonal_mode = False
+        elif key == 80 and action == 1 and scene.polygonal_mode == False:
+            scene.polygonal_mode = True
 
-        cameraPos[0] = max(cameraPos[0], -25) if cameraPos[0] < 0 else min(cameraPos[0], 25)
-        cameraPos[1] = max(cameraPos[1], -0.5) if cameraPos[1] < 0 else min(cameraPos[1], 25)
-        cameraPos[2] = max(cameraPos[2], -20) if cameraPos[2] < 0 else min(cameraPos[2], 45)
+        camera.pos[0] = max(camera.pos[0], -25) if camera.pos[0] < 0 else min(camera.pos[0], 25)
+        camera.pos[1] = max(camera.pos[1], -0.5) if camera.pos[1] < 0 else min(camera.pos[1], 25)
+        camera.pos[2] = max(camera.pos[2], -20) if camera.pos[2] < 0 else min(camera.pos[2], 45)
 
     firstMouse = True
     yaw = -90.0
@@ -127,7 +123,9 @@ if __name__ == "__main__":
     lastY = window.height / 2
 
     def mouse_event(window, xpos, ypos):
-        global firstMouse, cameraFront, yaw, pitch, lastX, lastY
+        global scene
+        global firstMouse, yaw, pitch, lastX, lastY
+
         if firstMouse:
             lastX = xpos
             lastY = ypos
@@ -152,7 +150,7 @@ if __name__ == "__main__":
         front.x = math.cos(glm.radians(yaw)) * math.cos(glm.radians(pitch))
         front.y = math.sin(glm.radians(pitch))
         front.z = math.sin(glm.radians(yaw)) * math.cos(glm.radians(pitch))
-        cameraFront = glm.normalize(front)
+        scene.camera.front = glm.normalize(front)
 
     glfw.set_key_callback(window.window, key_event)
     glfw.set_cursor_pos_callback(window.window, mouse_event)
@@ -171,7 +169,7 @@ if __name__ == "__main__":
 
         glClearColor(1.0, 1.0, 1.0, 1.0)
 
-        if polygonal_mode == True:
+        if scene.polygonal_mode == True:
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         else:
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
@@ -180,7 +178,7 @@ if __name__ == "__main__":
 
         draw_models(program, build_model_defs(angle), scene.resources, scene.texture_map, scene.materials_map)
 
-        mat_view = view(cameraPos, cameraFront, cameraUp)
+        mat_view = view(scene.camera.pos, scene.camera.front, scene.camera.up)
         loc_view = glGetUniformLocation(program, "view")
         glUniformMatrix4fv(loc_view, 1, GL_TRUE, mat_view)
 
@@ -189,7 +187,7 @@ if __name__ == "__main__":
         glUniformMatrix4fv(loc_projection, 1, GL_TRUE, mat_projection)
 
         loc_view_pos = glGetUniformLocation(program, "viewPos")  # recuperando localizacao da variavel viewPos na GPU
-        glUniform3f(loc_view_pos, cameraPos[0], cameraPos[1], cameraPos[2])  ### posicao da camera/observador (x,y,z)
+        glUniform3f(loc_view_pos, scene.camera.pos[0], scene.camera.pos[1], scene.camera.pos[2])  ### posicao da camera/observador (x,y,z)
 
         glfw.swap_buffers(window.window)
 
