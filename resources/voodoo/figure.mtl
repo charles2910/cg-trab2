@@ -1,0 +1,32 @@
+# Blender 3.4.0 MTL File: 'vodoo_model1.blend'
+# www.blender.org
+
+newmtl Material.001
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd black-fabric-seamless-texture-texture-map-d-d-texture-map-d-programms-black-white-seamless-texture-can-be-used-as-110044312.jpg
+
+newmtl Material.002
+Ns 274.738037
+Ka 1.000000 1.000000 1.000000
+Kd 0.001031 0.001031 0.001031
+Ks 0.833333 0.833333 0.833333
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl lambert1
+Ns 200.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd 96151392-camouflage-texture-of-military-cap-victory-day-.jpg
