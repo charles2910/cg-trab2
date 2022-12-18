@@ -13,17 +13,17 @@ from resources import build_resources, create_texture_path
 from transform import Camera, Transform, Coordinates
 
 class Scene:
-        """
-            A class used to group all the models in the scene and process them.
-            ...
-            Attributes
-            ----------
-            window:
-            an glfw window
+    """
+        A class used to group all the models in the scene and process them.
+        ...
+        Attributes
+        ----------
+        window:
+        an glfw window
 
-            program : class 'ctypes.c_uint'
-            an object to which the shader objects will be attached
-        """
+        program : class 'ctypes.c_uint'
+        an object to which the shader objects will be attached
+    """
     def __init__(self, window, program):
         self.program = program
         self.window = window
