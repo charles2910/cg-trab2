@@ -15,7 +15,7 @@ class Models:
                 },
                 'abandoned-cottage-house': {
                     'position': (180, 0, 1, 0, 0, -1, 25, 0.5, 0.5, 0.5),
-                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                    'light': (0.6, 1, 0.5, 200, False)
                 },
                 # 'madara': {
                 #     'position': (0, 1, 0, 0, 3.5, -1.001, min(self.angle * 50, 53) - 30, 0.35, 0.35, 0.35),
@@ -46,13 +46,9 @@ class Models:
                     'light': (0.6, 1, 0.5, 200, False)
                 },
                 'wooden-watch-tower': {
-                    'position': (180, 0, 1, 0, 8.5, -2, 0, 1, 1, 1),
-                    'light': (0.8, 1, 1, 200, False)
+                    'position': (180, 0, 1, 0, 8.5, -1.8, 0, 1, 1, 1),
+                    'light': (0.6, 1, 0.5, 200, False)
                 },
-                #'name': {
-                #    'position': (angle, r.x, r.y, r.z, t.x, t.y, t.z, s.x, s.y, s.z),
-                #    'light': (ka, kd, ks, ns, is_source)
-                #}
                 # 'boat': {
                 #     'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
                 #     'light': (1.0, 0.8, 0.5, 250.0, False)
@@ -62,8 +58,8 @@ class Models:
                 #     'light': (1.0, 0.8, 0.8, 640.0, False)
                 # },
                 # 'rock': {
-                #     'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
-                #     'light': (1.0, 0.8, 0.5, 250.0, False)
+                #     'position': (0, 0, 1, 0, -7, -1, 10, 0.2, 0.2, 0.2),
+                #     'light': (0.6, 1, 0.5, 200, False)
                 # },
                 # 'sword': {
                 #     'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
@@ -77,15 +73,11 @@ class Models:
                 #     'position': (0, 0, 0, 0,  0, 0, 0, 10, 10, 10),
                 #     'light': (1.0, 0.8, 0.5, 250.0, False)
                 # },
-                # 'tree-set': {
-                #     'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
-                #     'light': (1.0, 0.8, 0.5, 250.0, False)
-                # },
+                'tree-set': {
+                    'position': (0, 0, 1, 0, -7, -1, 10, 0.2, 0.2, 0.2),
+                    'light': (0.6, 1, 0.5, 200, False)
+                },
                 # 'voodoo': {
-                #     'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
-                #     'light': (1.0, 0.8, 0.5, 250.0, False)
-                # },
-                # 'wooden-watch-tower': {
                 #     'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
                 #     'light': (1.0, 0.8, 0.5, 250.0, False)
                 # },
