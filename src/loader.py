@@ -85,6 +85,7 @@ def load_model(resource, texture_map):
         load_texture_from_file(texture_id, texture)
 
     model = load_model_from_file(resource['obj'])
+
     # Read OBJ
     for face in model['faces']:
         if (face[3] != current_material):

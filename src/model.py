@@ -14,13 +14,9 @@ class Models:
                     'light': (0.6, 0.3, 0.7, 1.5, False)
                 },
                 'abandoned-cottage-house': {
-                    'position': (180, 0, 1, 0, 0, -1, 30, 1, 1, 1),
+                    'position': (180, 0, 1, 0, 0, -1, 25, 0.5, 0.5, 0.5),
                     'light': (1.0, 0.8, 0.5, 250.0, False)
                 },
-                # 'chunnin_room': {
-                #     'position': (180, 0, 1, 0, 0, -25.85, 175, 3, 3, 3),
-                #     'light': (0.6, 0.5, 0.5, 200, False)
-                # },
                 # 'madara': {
                 #     'position': (0, 1, 0, 0, 3.5, -1.001, min(self.angle * 50, 53) - 30, 0.35, 0.35, 0.35),
                 #     'light': (0.6, 1, 0.5, 200, False)
@@ -49,10 +45,10 @@ class Models:
                     'position': (0, 1, 0, 0, -8.7, -0.99, 0, 1.75, 1, 80),
                     'light': (0.6, 1, 0.5, 200, False)
                 },
-                # 'ramen_shop': {
-                #     'position': (270, 0, 1, 0, 8.5, -1.05, 0, 0.005, 0.005, 0.005),
-                #     'light': (0.8, 1, 1, 200, False)
-                # },
+                'wooden-watch-tower': {
+                    'position': (180, 0, 1, 0, 8.5, -2, 0, 1, 1, 1),
+                    'light': (0.8, 1, 1, 200, False)
+                },
                 #'name': {
                 #    'position': (angle, r.x, r.y, r.z, t.x, t.y, t.z, s.x, s.y, s.z),
                 #    'light': (ka, kd, ks, ns, is_source)
