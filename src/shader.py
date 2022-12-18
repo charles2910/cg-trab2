@@ -15,6 +15,7 @@ class Shader:
         ----------
         vertex_code : str
         GLSL vertex shader code
+
         fragment_code : str
         GLSL fragment shader code
     """

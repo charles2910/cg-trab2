@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+#----------------------------------------------------------------------------
+# Created By: Carlos Henrique Lima Melara (9805380) and Maíra Canal (11819403)
+# Created Date: 17/12/2022
+# ---------------------------------------------------------------------------
+
 import numpy as np
 import glm
 from OpenGL.GL import *
@@ -7,6 +13,17 @@ from resources import build_resources, create_texture_path
 from transform import Camera, Transform, Coordinates
 
 class Scene:
+        """
+            A class used to group all the models in the scene and process them.
+            ...
+            Attributes
+            ----------
+            window:
+            an glfw window
+
+            program : class 'ctypes.c_uint'
+            an object to which the shader objects will be attached
+        """
     def __init__(self, window, program):
         self.program = program
         self.window = window
@@ -21,6 +38,7 @@ class Scene:
         self.polygonal_mode = False
 
     def prepare(self):
+        '''Prepare all the models in the scene'''
         vertices_list, textures_coord_list, normals_list, resources, texture_map, materials_map = load_models(self.resources)
 
         self.resources = resources
@@ -67,6 +85,7 @@ class Scene:
         glVertexAttribPointer(loc_normals_coord, 3, GL_FLOAT, False, stride, offset)
 
     def draw_model(self, model_name, model):
+        '''Draws a model applying the model matrix and lighting information.'''
         (start_index, end_index) = self.resources[model_name]['position']
         materials = self.materials_map[model_name]
 
@@ -74,7 +93,7 @@ class Scene:
         s = Coordinates(0.0, 0.0, 0.0)
         t = Coordinates(0.0, 0.0, 0.0)
 
-        # aplica a matriz model
+        # applies the model matrix
         (angle, r.x, r.y, r.z, t.x, t.y, t.z, s.x, s.y, s.z) = model['position']
         (ka, kd, ks, ns, is_source) = model['light']
 
@@ -82,21 +101,26 @@ class Scene:
         loc_model = glGetUniformLocation(self.program, "model")
         glUniformMatrix4fv(loc_model, 1, GL_TRUE, mat_model)
 
-        loc_ka = glGetUniformLocation(self.program, "ka")  # recuperando localizacao da variavel ka na GPU
-        glUniform1f(loc_ka, ka)  ### envia ka pra gpu
+        # get the ka variable location
+        loc_ka = glGetUniformLocation(self.program, "ka")
+        glUniform1f(loc_ka, ka)
 
-        loc_kd = glGetUniformLocation(self.program, "kd")  # recuperando localizacao da variavel kd na GPU
-        glUniform1f(loc_kd, kd)  ### envia kd pra gpu
+        # get the kd variable location
+        loc_kd = glGetUniformLocation(self.program, "kd")
+        glUniform1f(loc_kd, kd)
 
-        loc_ks = glGetUniformLocation(self.program, "ks")  # recuperando localizacao da variavel ks na GPU
-        glUniform1f(loc_ks, ks)  ### envia ks pra gpu
+        # get the ks variable location
+        loc_ks = glGetUniformLocation(self.program, "ks")
+        glUniform1f(loc_ks, ks)
 
-        loc_ns = glGetUniformLocation(self.program, "ns")  # recuperando localizacao da variavel ns na GPU
-        glUniform1f(loc_ns, ns)  ### envia ns pra gpu
+        # get the ns variable location
+        loc_ns = glGetUniformLocation(self.program, "ns")
+        glUniform1f(loc_ns, ns)
 
         if (is_source):
-            loc_light_pos = glGetUniformLocation(self.program, "lightPos")  # recuperando localizacao da variavel lightPos na GPU
-            glUniform3f(loc_light_pos, t.x, t.y, t.z)  ### posicao da fonte de luz
+            # get the lightPos variable location
+            loc_light_pos = glGetUniformLocation(self.program, "lightPos")
+            glUniform3f(loc_light_pos, t.x, t.y, t.z)
 
         for i in range(len(materials)):
             texture = create_texture_path(model_name, materials[i]['texture'])
@@ -107,11 +131,13 @@ class Scene:
 
 
     def draw_models(self):
+        '''Draws all the models specified.'''
         models = self.models.build()
         for model in models:
             self.draw_model(model, models[model])
 
     def draw(self):
+        '''Draws the scene by iterating in the models and applying the model and projection matrix.'''
         if self.polygonal_mode:
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         else:
@@ -129,5 +155,6 @@ class Scene:
         loc_projection = glGetUniformLocation(self.program, "projection")
         glUniformMatrix4fv(loc_projection, 1, GL_TRUE, mat_projection)
 
-        loc_view_pos = glGetUniformLocation(self.program, "viewPos")  # recuperando localizacao da variavel viewPos na GPU
-        glUniform3f(loc_view_pos, self.camera.pos[0], self.camera.pos[1], self.camera.pos[2])  ### posicao da camera/observador (x,y,z)
+        # get the viewPos variable location
+        loc_view_pos = glGetUniformLocation(self.program, "viewPos")
+        glUniform3f(loc_view_pos, self.camera.pos[0], self.camera.pos[1], self.camera.pos[2])

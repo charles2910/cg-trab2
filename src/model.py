@@ -1,6 +1,20 @@
+#!/usr/bin/env python3
+#----------------------------------------------------------------------------
+# Created By: Carlos Henrique Lima Melara (9805380) and Maíra Canal (11819403)
+# Created Date: 17/12/2022
+# ---------------------------------------------------------------------------
+
 import math
 
 class Models:
+    """
+        A class used to define the position and light of all the models involved.
+        ...
+        Attributes
+        ----------
+        angle : float
+        parameter to move models, such as the sun
+    """
     def __init__(self):
         self.angle = 0
 

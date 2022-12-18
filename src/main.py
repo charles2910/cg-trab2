@@ -80,28 +80,30 @@ fragment_code = """
         """
 
 if __name__ == "__main__":
-    window = Window(1600, 1200, "Rock Lee vs Gaara")
+    window = Window(1600, 1200, "Medieval Scene")
     program = Shader(vertex_code, fragment_code).program
     scene = Scene(window, program)
 
+    # prepares the scene by loading models and compiling shaders
     scene.prepare()
 
+    # sub-routine to deal with key events
     def key_event(window, key, scancode, action, mods):
         global scene
 
         camera = scene.camera
 
         camera_speed = 0.2
-        if key == 87 and (action == 1 or action == 2):  # tecla W
+        if key == 87 and (action == 1 or action == 2):  # W key
             camera.pos += camera_speed * camera.front
 
-        if key == 83 and (action == 1 or action == 2):  # tecla S
+        if key == 83 and (action == 1 or action == 2):  # S key
             camera.pos -= camera_speed * camera.front
 
-        if key == 65 and (action == 1 or action == 2):  # tecla A
+        if key == 65 and (action == 1 or action == 2):  # A key
             camera.pos -= glm.normalize(glm.cross(camera.front, camera.up)) * camera_speed
 
-        if key == 68 and (action == 1 or action == 2):  # tecla D
+        if key == 68 and (action == 1 or action == 2):  # D key
             camera.pos += glm.normalize(glm.cross(camera.front, camera.up)) * camera_speed
 
         if key == 80 and action == 1 and scene.polygonal_mode:
@@ -119,6 +121,7 @@ if __name__ == "__main__":
     lastX = window.width / 2
     lastY = window.height / 2
 
+    # sub-routine to deal with mouse events
     def mouse_event(window, xpos, ypos):
         global scene
         global firstMouse, yaw, pitch, lastX, lastY
@@ -161,6 +164,7 @@ if __name__ == "__main__":
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glClearColor(1.0, 1.0, 1.0, 1.0)
 
+        # draw all models
         scene.draw()
 
         glfw.swap_buffers(window.window)
