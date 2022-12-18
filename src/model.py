@@ -49,5 +49,49 @@ class Models:
                     'position': (270, 0, 1, 0, 8.5, -1.05, 0, 0.005, 0.005, 0.005),
                     'light': (0.8, 1, 1, 200, False)
                 }
+                #'name': {
+                #    'position': (angle, r.x, r.y, r.z, t.x, t.y, t.z, s.x, s.y, s.z),
+                #    'light': (ka, kd, ks, ns, is_source)
+                #}
+                'abandoned-cottage-house': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'boat': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'knife': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.8, 640.0, False)
+                },
+                'rock': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'sword': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'table': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 10, 10, 10),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'table-with-glass': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 10, 10, 10),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'tree-set': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'voodoo': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
+                'wooden-watch-tower': {
+                    'position': (0, 0, 0, 0,  0, 0, 0, 1, 1, 1),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
             }
         )
