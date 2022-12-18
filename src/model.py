@@ -42,7 +42,7 @@ class Models:
                     'light': (1, 1, 1, 1000000, True)
                 },
                 'street': {
-                    'position': (0, 1, 0, 0, -8.7, -0.99, 0, 1.75, 1, 80),
+                    'position': (0, 1, 0, 0, -4.3, -0.99, 0, 0.8, 1, 80),
                     'light': (0.6, 1, 0.5, 200, False)
                 },
                 'wooden-watch-tower': {
