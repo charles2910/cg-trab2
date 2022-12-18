@@ -80,13 +80,13 @@ class Models:
                 #     'light': (1.0, 0.8, 0.5, 250.0, False)
                 # },
                 'table': {
-                    'position': (180, 0, 1, 0, 0, -1, 25, 3, 3, 3),
-                    'light': (1, 0.3, 0.9, 64, False)
+                    'position': (180, 0, 1, 0, 0, 0, 25, 3, 3, 3),
+                    'light': (1, 0.8, 0.5, 100, False)
                 },
-                # 'table-with-glass': {
-                #     'position': (0, 0, 0, 0,  0, 0, 0, 10, 10, 10),
-                #     'light': (1.0, 0.8, 0.5, 250.0, False)
-                # },
+                'table-with-glass': {
+                    'position': (0, 0, 0, 0,  0, 0, 25, 3, 3, 3),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
+                },
                 'tree-set': {
                     'position': (0, 0, 1, 0, -7, -1, 10, 0.2, 0.2, 0.2),
                     'light': (0.6, 1, 0.5, 200, False)
