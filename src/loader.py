@@ -117,9 +117,10 @@ def load_models(resources):
     materials_map = dict()
     texture_map = dict()
 
+    print("Processando modelos... Aguarde alguns segundos!")
+
     for resource in resources:
         start_position = len(vertices_list)
-        print(f'Processando modelo {resource}. Vertice inicial:', start_position)
         vertices, texture_coord, normals, materials, texture_map = load_model(resources[resource], texture_map)
         materials_map[resource] = materials
         normals_list += normals
@@ -127,7 +128,6 @@ def load_models(resources):
         textures_coord_list += texture_coord
         end_position = len(vertices_list)
         resources[resource]['position'] = (start_position, end_position)
-        print(f'Processando modelo {resource}. Vertice final:', end_position)
 
     return vertices_list, textures_coord_list, normals_list, resources, texture_map, materials_map
 
