@@ -68,5 +68,8 @@ python src/main.py
 É possível movimentar a câmera por meio do teclado com as teclas `ASWD` e do
 mouse, que indica a direção do movimento.
 
+Também é possível alterar entre a visualização de polígonos (wireframes) e
+normal com a tecla `p`.
+
 ## Licença
 O código-fonte escrito por nós será licenciado com a licença MIT.
