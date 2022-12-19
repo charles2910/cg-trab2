@@ -83,9 +83,9 @@ class Models:
                     'position': (0, 0, 1, 0, -7, -1, 10, 0.2, 0.2, 0.2),
                     'light': (0.6, 1, 0.5, 200, False)
                 },
-                # 'voodoo': {
-                #     'position': (25, 300, 300, 300, 3.5, -1.001, min(self.angle * 50, 53) - 30, 1, 1, 1),
-                #     'light': (0.6, 1, 0.5, 200, False)
-                # },
+                'voodoo': {
+                    'position': (0, 1, 1.5, 1, -4.5, -1.001, min(self.angle * 50, 53) - 30, 1, 1, 1),
+                    'light': (0.6, 1, 0.5, 200, False)
+                },
             }
         )
