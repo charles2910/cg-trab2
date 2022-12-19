@@ -68,8 +68,12 @@ class Models:
                     'light': (1, 0.8, 0.5, 100, False)
                 },
                 'table': {
-                    'position': (180, 0, 1, 0, 0, -1, 25, 3, 3, 3),
+                    'position': (180, 0, 1, 0, 0, -0.5, 25, 3, 3, 3),
                     'light': (1, 0.8, 0.5, 100, False)
+                },
+                'table-with-glass': {
+                    'position': (0, 0, 1, 0,  5, -0.5, 21.6, 1.5, 1.5, 1.5),
+                    'light': (1.0, 0.8, 0.5, 250.0, False)
                 },
                 # 'table-with-glass': {
                 #     'position': (0, 0, 0, 0,  0, 0, 25, 3, 3, 3),
