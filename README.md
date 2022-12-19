@@ -14,26 +14,26 @@ virtual python (python venv). Para isso, basta criar um novo `venv`
 após baixar o código:
 
 ```
-bash python -m venv venv
+python -m venv venv
 ```
 
 Para o Debian:
 
 ```
-bash python3 -m venv venv
+python3 -m venv venv
 ```
 
 Esse comando criará uma pasta `venv` na raiz do projeto contendo o ambiente
 virtual. Para entrar no ambiente, execute:
 
 ```
-bash source venv/bin/activate
+source venv/bin/activate
 ```
 
 A partir deste ambiente, instale as dependências com o `pip`:
 
 ```
-bash pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 A partir desse momento, seu computador estará pronto para desenvolver ou
@@ -60,14 +60,13 @@ export LIBGL_DRIVERS_PATH=/usr/lib/x86_64-linux-gnu/dri
 Para executar a aplicação:
 
 ```
-bash python src/main.py
+python src/main.py
 ```
 
 ### Comandos
-- É possível mover o barco com as setas do teclado;
-- É possível mover horizontalmente o Sol com as teclas `a` e `d`;
-- É possível aumentar o Sol com a teclas `w` e diminui-lo com `s`;
-- É possível rotacionar as pás do moinho com as teclas `q` e `e`;
+
+É possível movimentar a câmera por meio do teclado com as teclas `ASWD` e do
+mouse, que indica a direção do movimento.
 
 ## Licença
 O código-fonte escrito por nós será licenciado com a licença MIT.

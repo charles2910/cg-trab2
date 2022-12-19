@@ -9,9 +9,7 @@ import glfw
 class Window:
     """
         A class used to represent the system window.
-
         ...
-
         Attributes
         ----------
         x : int
@@ -24,5 +22,9 @@ class Window:
     def __init__(self, x: int, y: int, name: str):
         glfw.init()
         glfw.window_hint(glfw.VISIBLE, glfw.FALSE)
+
         self.window = glfw.create_window(x, y, name, None, None)
+        self.width = x
+        self.height = y
+
         glfw.make_context_current(self.window)
